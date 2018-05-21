@@ -49,7 +49,8 @@ class ReadLineAService(object):
         assert isinstance(line_number, int), type(line_number)
 
         # Calculate how many bytes must be skipped to find the entry corresponding to the line number in the index
-        offset_position = (line_number - 1) * TextFiles.LINE_LENGTH
+        # including one extra space for '\n'
+        offset_position = (line_number - 1) * (TextFiles.LINE_LENGTH + 1)
 
         index_file = open(TextFiles.FirstFileIndex, 'r')
         index_file.seek(offset_position)
