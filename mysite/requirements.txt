@@ -1,5 +1,7 @@
 Django==2.0.5
 djangorestframework==3.8.2
+memory-profiler==0.52.0
+psutil==5.4.5
 python-memcached==1.59
 pytz==2018.4
 six==1.11.0
