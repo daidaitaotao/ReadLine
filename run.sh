@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd salsifydemo
 source bin/activate
 cd ReadLine/mysite/

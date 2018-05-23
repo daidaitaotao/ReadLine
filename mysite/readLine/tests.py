@@ -1,10 +1,7 @@
-import os
 import random
 
 from django.test import TestCase
-from readLine.models import LineIndex
 from readLine.file_reading_service.ApplicationService.ReadLineAService import ReadLineAService
-from readLine.file_reading_service import TextFiles
 
 
 class ReadLineTestCase(TestCase):

@@ -1,5 +1,6 @@
 from django.db import models
 
+# (NOTE: This is optional functionality.  It is not used by default.)
 
 class LineIndex(models.Model):
     """

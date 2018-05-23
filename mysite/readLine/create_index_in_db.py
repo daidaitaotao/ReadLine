@@ -1,7 +1,7 @@
 from readLine.file_reading_service import TextFiles
 from readLine.models import LineIndex
 
-# (This is optional functionality)
+# (NOTE: This is optional functionality.  It is not used by default.)
 
 # This is a simple script which created an index table in the database for the input file.
 # The table will contain the each line number mapped to the number of bytes that must be

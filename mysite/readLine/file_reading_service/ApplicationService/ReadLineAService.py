@@ -10,9 +10,10 @@ from memory_profiler import profile
 
 class ReadLineAService(object):
     """
-        Application service designed to read a line based on customer's request
+        Application service designed to read a user-specified line from a file
     """
 
+    # Variables used for memory profiling
     precision = 10
     memory_file = open(TextFiles.MEMORY_PROFILE_FILE, 'w')
 
@@ -21,7 +22,7 @@ class ReadLineAService(object):
     def find_line_from_db(line_number):
         """
             A static method to find the specified line in the file using an index stored in a database
-            @param line_number: the line number, the first line will be 1, and so on
+            @param line_number: the line number, with the first line being 1
             @type line_number: int
             @retype: None or str
 
@@ -49,7 +50,7 @@ class ReadLineAService(object):
     def find_line_from_index_file(line_number):
         """
             A static method to find the specified line in the file using an index stored in a file
-            @param line_number: the line number, the first line will be 1, and so on
+            @param line_number: the line number, with the first line being 1
             @type line_number: int
             @retype: None or str
 
@@ -57,15 +58,15 @@ class ReadLineAService(object):
         """
         assert isinstance(line_number, int), type(line_number)
 
-        # Calculate how many bytes must be skipped to find the entry corresponding to the line number in the index
-        # including one extra space for '\n'.
-        offset_position = (line_number - 1) * (TextFiles.LINE_LENGTH + 1)
+        # Calculate how many bytes must be skipped to find the entry corresponding to the line number in the index.
+        # Note: The +1 is added to account for the newline character ('\n') at the end of each line.
+        index_offset = (line_number - 1) * (TextFiles.LINE_LENGTH + 1)
         index_file = open(TextFiles.FirstFileIndex, 'r')
-        index_file.seek(offset_position)
-        offset_text = index_file.readline()
-        if not offset_text:
+        index_file.seek(index_offset)
+        index_offset_text = index_file.readline()
+        if not index_offset_text:
             return None
-        offset = int(offset_text)
+        offset = int(index_offset_text)
 
         file = open(TextFiles.FirstFile, 'r')
         file.seek(offset)
@@ -80,7 +81,6 @@ class ReadLineAService(object):
             @rtype: int
         """
         cache_key = 'max_line_number'
-        cache_time = 60 * 60 * 8
         max_line_number = cache.get(cache_key)
         if not max_line_number:
             max_line_index_entity = LineIndex.objects.latest('line_number')
@@ -88,6 +88,8 @@ class ReadLineAService(object):
                 max_line_number = max_line_index_entity.line_number
             else:
                 max_line_number = 0
+
+            cache_time = 60 * 60 * 8
             cache.set(cache_key, max_line_number, cache_time)
         return max_line_number
 
@@ -99,7 +101,6 @@ class ReadLineAService(object):
             @rtype: int
         """
         cache_key = 'max_line_number'
-        cache_time = 60 * 60 * 8
         max_line_number = cache.get(cache_key)
         if not max_line_number:
             meta_file = open(TextFiles.FirstFileMeta, 'r')
@@ -108,6 +109,8 @@ class ReadLineAService(object):
                 max_line_number = int(max_line_number)
             else:
                 max_line_number = 0
+
+            cache_time = 60 * 60 * 8
             cache.set(cache_key, max_line_number, cache_time)
         return max_line_number
 
